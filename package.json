@@ -1,0 +1,243 @@
+{
+  "name": "prompt-stash",
+  "displayName": "PromptStash - AI Prompt Manager",
+  "description": "Save, organize, and reuse your best AI coding prompts. Smart completion for vibe coding workflows.",
+  "version": "0.1.0",
+  "publisher": "liuyuchen",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets"
+  ],
+  "keywords": [
+    "prompt",
+    "copilot",
+    "ai",
+    "vibe-coding",
+    "snippet",
+    "prompt-engineering"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "promptStash.savePrompt",
+        "title": "PromptStash: Save Prompt",
+        "icon": "$(add)"
+      },
+      {
+        "command": "promptStash.saveSelection",
+        "title": "PromptStash: Save Selection as Prompt"
+      },
+      {
+        "command": "promptStash.searchAndInsert",
+        "title": "PromptStash: Search & Insert Prompt",
+        "icon": "$(search)"
+      },
+      {
+        "command": "promptStash.editPrompt",
+        "title": "PromptStash: Edit Prompt",
+        "icon": "$(edit)"
+      },
+      {
+        "command": "promptStash.deletePrompt",
+        "title": "PromptStash: Delete Prompt",
+        "icon": "$(trash)"
+      },
+      {
+        "command": "promptStash.ratePrompt",
+        "title": "PromptStash: Rate Prompt",
+        "icon": "$(star-full)"
+      },
+      {
+        "command": "promptStash.refreshLibrary",
+        "title": "PromptStash: Refresh Library",
+        "icon": "$(refresh)"
+      },
+      {
+        "command": "promptStash.exportLibrary",
+        "title": "PromptStash: Export Library"
+      },
+      {
+        "command": "promptStash.importLibrary",
+        "title": "PromptStash: Import Library"
+      },
+      {
+        "command": "promptStash.insertPrompt",
+        "title": "PromptStash: Insert Prompt",
+        "icon": "$(insert)"
+      },
+      {
+        "command": "promptStash.copyPrompt",
+        "title": "PromptStash: Copy Prompt to Clipboard",
+        "icon": "$(clippy)"
+      },
+      {
+        "command": "promptStash.duplicatePrompt",
+        "title": "PromptStash: Duplicate Prompt",
+        "icon": "$(copy)"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "promptStash",
+          "title": "PromptStash",
+          "icon": "$(bookmark)"
+        }
+      ]
+    },
+    "views": {
+      "promptStash": [
+        {
+          "id": "promptStash.library",
+          "name": "Prompt Library",
+          "icon": "$(bookmark)",
+          "contextualTitle": "PromptStash"
+        },
+        {
+          "id": "promptStash.favorites",
+          "name": "⭐ Favorites",
+          "icon": "$(star-full)",
+          "contextualTitle": "PromptStash Favorites"
+        }
+      ]
+    },
+    "viewsWelcome": [
+      {
+        "view": "promptStash.library",
+        "contents": "No prompts saved yet.\n[Save Your First Prompt](command:promptStash.savePrompt)\nTip: Select text and right-click → 'Save Selection as Prompt'"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "promptStash.savePrompt",
+          "when": "view == promptStash.library",
+          "group": "navigation"
+        },
+        {
+          "command": "promptStash.searchAndInsert",
+          "when": "view == promptStash.library",
+          "group": "navigation"
+        },
+        {
+          "command": "promptStash.refreshLibrary",
+          "when": "view == promptStash.library",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "promptStash.insertPrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "inline"
+        },
+        {
+          "command": "promptStash.copyPrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "inline"
+        },
+        {
+          "command": "promptStash.editPrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "1_modify"
+        },
+        {
+          "command": "promptStash.ratePrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "1_modify"
+        },
+        {
+          "command": "promptStash.duplicatePrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "1_modify"
+        },
+        {
+          "command": "promptStash.deletePrompt",
+          "when": "view == promptStash.library && viewItem == prompt",
+          "group": "2_danger"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "promptStash.saveSelection",
+          "when": "editorHasSelection",
+          "group": "promptStash"
+        }
+      ]
+    },
+    "keybindings": [
+      {
+        "command": "promptStash.savePrompt",
+        "key": "ctrl+shift+p ctrl+shift+s",
+        "mac": "cmd+shift+p cmd+shift+s"
+      },
+      {
+        "command": "promptStash.searchAndInsert",
+        "key": "ctrl+shift+p ctrl+shift+i",
+        "mac": "cmd+shift+p cmd+shift+i"
+      }
+    ],
+    "configuration": {
+      "title": "PromptStash",
+      "properties": {
+        "promptStash.storageLocation": {
+          "type": "string",
+          "default": "",
+          "description": "Custom path for prompt library storage. Leave empty to use default global storage."
+        },
+        "promptStash.enableInlineCompletion": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable inline prompt suggestions when typing in markdown/prompt files."
+        },
+        "promptStash.triggerPrefix": {
+          "type": "string",
+          "default": "/ps",
+          "description": "Prefix to trigger prompt snippet suggestions (e.g. /ps)."
+        },
+        "promptStash.completionFileTypes": {
+          "type": "array",
+          "default": [
+            "markdown",
+            "plaintext",
+            "github-copilot-chat"
+          ],
+          "description": "File types where prompt completion is active."
+        },
+        "promptStash.defaultCategory": {
+          "type": "string",
+          "default": "General",
+          "description": "Default category for new prompts."
+        },
+        "promptStash.maxCompletionResults": {
+          "type": "number",
+          "default": 10,
+          "description": "Maximum number of completion suggestions to show."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "package": "npx @vscode/vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@vscode/vsce": "^2.22.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "fuse.js": "^7.0.0"
+  }
+}
